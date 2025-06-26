@@ -1,6 +1,7 @@
 namespace Spotify.Core.Persistencia;
 
-public interface IEliminar <T>
+public interface IEliminar<T>
 {
-    void Eliminar (T elemento );
+    void Eliminar(T elemento);
+    Task EliminarAsync(T elemento);
 }
