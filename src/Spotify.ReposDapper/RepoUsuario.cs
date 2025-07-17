@@ -2,8 +2,8 @@ namespace Spotify.ReposDapper;
 
 public class RepoUsuario : RepoGenerico, IRepoUsuario
 {
-    public RepoUsuario(IDbConnection conexion) 
-        : base(conexion) {}
+    public RepoUsuario(IDbConnection conexion)
+        : base(conexion) { }
 
     public uint Alta(Usuario usuario)
     {
@@ -35,6 +35,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         throw new NotImplementedException();
     }
 
-    public IList<Usuario> Obtener() => EjecutarSPConReturnDeTipoLista<Usuario>("ObtenerUsuarios").ToList();
+    public List<Usuario> Obtener() => EjecutarSPConReturnDeTipoLista<Usuario>("ObtenerUsuarios").ToList();
+
 }
  

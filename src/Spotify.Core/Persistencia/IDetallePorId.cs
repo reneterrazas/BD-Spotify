@@ -12,5 +12,5 @@ namespace Spotify.Core.Persistencia;
 public interface IDetallePorId<T, N> where N : IBinaryNumber<N>
 {
     T? DetalleDe(N id);
-    Task<T?> DetalleDeAsync(N id);
+    
 }

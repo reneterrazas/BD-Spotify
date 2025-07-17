@@ -10,7 +10,7 @@ public class RepoAlbumTest : TestBase
         _repoAlbum = new RepoAlbum(Conexion);
         _repoArtista = new RepoArtista(Conexion);
 
-    } 
+    }
 
     [Fact]
     public void ListarOK()
@@ -18,20 +18,21 @@ public class RepoAlbumTest : TestBase
         var albunes = _repoAlbum.Obtener();
         Assert.NotNull(albunes);
     }
- 
+
 
     [Fact]
     public void AltaAlbum()
     {
         var unArtista = _repoArtista.Obtener().First();
         // Obtener un artista para la prueba
-        var nuevoAlbum = new Album { 
+        var nuevoAlbum = new Album
+        {
             Titulo = "Las 3 moscas",
             FechaLanzamiento = DateTime.Now,
             artista = unArtista
-            };
+        };
         var idAlbumCreado = _repoAlbum.Alta(nuevoAlbum);
-        
+
         var Albunes = _repoAlbum.Obtener();
         Assert.Contains(Albunes, a => a.idAlbum == idAlbumCreado);
     }
@@ -63,5 +64,46 @@ public class RepoAlbumTest : TestBase
 
         Assert.NotNull(AlbumPorId);
         Assert.Equal(idAlbum, AlbumPorId.idAlbum);
+    }
+    
+        [Fact]
+    public async Task ListarAsync_OK()
+    {
+        var repo = new RepoAlbum(Conexion);
+        var albums = await repo.ObtenerAsync();
+        Assert.NotNull(albums);
+        Assert.NotEmpty(albums);
+    }
+
+    [Fact]
+    public async Task AltaAlbumAsync_Ok()
+    {
+        var repo = new RepoAlbum(Conexion);
+        var album = new Album { Titulo = "Nuevo Album Async", artista = new Artista { idArtista = 1, NombreArtistico = "Artista Test", Nombre = "Nombre Test", Apellido = "Apellido Test" } };
+        var id = await repo.AltaAsync(album);
+        var albums = await repo.ObtenerAsync();
+        Assert.Contains(albums, a => a.idAlbum == id);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    public async Task DetalleDeAsync_OK(uint idAlbum)
+    {
+        var repo = new RepoAlbum(Conexion);
+        var album = await repo.DetalleDeAsync(idAlbum);
+        Assert.NotNull(album);
+        Assert.Equal(idAlbum, album.idAlbum);
+    }
+
+    [Fact]
+    public async Task EliminarAsync_OK()
+    {
+        var repo = new RepoAlbum(Conexion);
+        var album = new Album { Titulo = "Para Eliminar Async", artista = new Artista { idArtista = 1, NombreArtistico = "Artista Test", Nombre = "Nombre Test", Apellido = "Apellido Test" } };
+        var id = await repo.AltaAsync(album);
+        await repo.EliminarAsync(id);
+        var albumEliminado = await repo.DetalleDeAsync(id);
+        Assert.Null(albumEliminado);
     }
 }   

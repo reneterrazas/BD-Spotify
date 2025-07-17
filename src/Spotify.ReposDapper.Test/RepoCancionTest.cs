@@ -28,11 +28,11 @@ public class RepoCancionTest : TestBase
         var unArtista = _repoArtista.Obtener().First();
         var unAlbum = _repoAlbum.Obtener().First();
         var unGenero = _repoGenero.Obtener().First();
-        
-        var InsertarCancion = new Cancion 
+
+        var InsertarCancion = new Cancion
         {
             Titulo = "Lamento ser boliviano",
-            Duracion = new TimeSpan(0,15,2),
+            Duracion = new TimeSpan(0, 15, 2),
             album = unAlbum,
             genero = unGenero,
             artista = unArtista
@@ -45,7 +45,7 @@ public class RepoCancionTest : TestBase
         Assert.Contains(ListaCanciones, variable => variable.idCancion == idCancionInsertada);
 
     }
-    
+
     [Theory]
     [InlineData(1)]
     [InlineData(2)]
@@ -69,9 +69,52 @@ public class RepoCancionTest : TestBase
         var CancionesTitulo = _repoCancion.Matcheo(cadena);
 
         foreach (var titulo in CancionesTitulo)
-        {    
-        Console.WriteLine(titulo);
+        {
+            Console.WriteLine(titulo);
         }
+    }
+     [Fact]
+    public async Task ListarAsync_OK()
+    {
+        var repo = new RepoCancion(Conexion);
+        var canciones = await repo.ObtenerAsync();
+        Assert.NotNull(canciones);
+        Assert.NotEmpty(canciones);
+    }
+
+    [Fact]
+    public async Task AltaCancionAsync_Ok()
+    {
+        var repo = new RepoCancion(Conexion);
+        var cancion = new Cancion
+        { Titulo = "Async Song",
+          Duracion = new TimeSpan(0,12,56),
+          album = new Album { idAlbum = 1 },
+          artista = new Artista { idArtista = 1, NombreArtistico = "Artista Test" },
+          genero = new Genero { idGenero = 1 } };
+        var id = await repo.AltaAsync(cancion);
+        var canciones = await repo.ObtenerAsync();
+        Assert.Contains(canciones, c => c.idCancion == id);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    public async Task DetalleDeAsync_OK(uint idCancion)
+    {
+        var repo = new RepoCancion(Conexion);
+        var cancion = await repo.DetalleDeAsync(idCancion);
+        Assert.NotNull(cancion);
+        Assert.Equal(idCancion, cancion.idCancion);
+    }
+
+    [Fact]
+    public async Task MatcheoAsync_OK()
+    {
+        var repo = new RepoCancion(Conexion);
+        var resultado = await repo.MatcheoAsync("Celos");
+        Assert.NotNull(resultado);
+        Assert.Contains(resultado, t => t.Contains("Celos"));
     }
 }
 

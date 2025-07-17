@@ -2,8 +2,8 @@ namespace Spotify.ReposDapper;
 
 public class RepoReproduccion : RepoGenerico, IRepoReproduccion
 {
-    public RepoReproduccion(IDbConnection conexion) 
-        : base(conexion) {}
+    public RepoReproduccion(IDbConnection conexion)
+        : base(conexion) { }
 
     public uint Alta(Reproduccion reproduccion)
     {
@@ -23,10 +23,10 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
     {
         var BuscarReproduccionPorId = @"SELECT * FROM HistorialReproduccion WHERE idHistorial = @idHistorial";
 
-        var Buscar = _conexion.QueryFirstOrDefault<Reproduccion>(BuscarReproduccionPorId, new {idHistorial});
-        
+        var Buscar = _conexion.QueryFirstOrDefault<Reproduccion>(BuscarReproduccionPorId, new { idHistorial });
+
         return Buscar;
     }
 
-    public IList<Reproduccion> Obtener() => EjecutarSPConReturnDeTipoLista<Reproduccion>("ObtenerHistorialReproduccion").ToList();
+    public List<Reproduccion> Obtener() => EjecutarSPConReturnDeTipoLista<Reproduccion>("ObtenerHistorialReproduccion").ToList();
 }

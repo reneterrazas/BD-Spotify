@@ -28,29 +28,6 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
         return Buscar;
     }
 
-    public IList<Nacionalidad> Obtener() => EjecutarSPConReturnDeTipoLista<Nacionalidad>("ObtenerNacionalidades").ToList();
-    public async Task<uint> AltaAsync(Nacionalidad nacionalidad)
-    {
-        var parametros = new DynamicParameters();
-        parametros.Add("@unidNacionalidad", direction: ParameterDirection.Output);
-        parametros.Add("@unPais", nacionalidad.Pais);
+    public List<Nacionalidad> Obtener() => EjecutarSPConReturnDeTipoLista<Nacionalidad>("ObtenerNacionalidades").ToList();
 
-        await _conexion.ExecuteAsync("altaNacionalidad", parametros, commandType: CommandType.StoredProcedure);
-
-        nacionalidad.idNacionalidad = parametros.Get<uint>("@unidNacionalidad");
-        return nacionalidad.idNacionalidad;
-    }
-
-    public async Task<Nacionalidad?> DetalleDeAsync(uint idNacionalidad)
-    {
-        var BuscarNacionalidadPorId = @"SELECT * FROM Nacionalidad WHERE idNacionalidad = @idNacionalidad";
-        var Buscar = await _conexion.QueryFirstOrDefaultAsync<Nacionalidad>(BuscarNacionalidadPorId, new{idNacionalidad});
-        return Buscar;
-    }
-
-    public async Task<IList<Nacionalidad>> ObtenerAsync()
-    {
-        var result = await EjecutarSPConReturnDeTipoListaAsync<Nacionalidad>("ObtenerNacionalidades");
-        return result.ToList();
-    }
 }

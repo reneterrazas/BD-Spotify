@@ -1,12 +1,12 @@
 namespace Spotify.ReposDapper;
 using System.Data;
 using System.Threading.Tasks;
-public class RepoCancion : RepoGenerico, IRepoCancion
+public class RepoCancionAsync : RepoGenerico, IRepoCancionAsync
 {
-    public RepoCancion(IDbConnection conexion)
+    public RepoCancionAsync(IDbConnection conexion)
         : base(conexion) { }
 
-    public uint Alta(Cancion cancion)
+    public async Task<uint> Alta(Cancion cancion)
     {
         var parametros = new DynamicParameters();
         parametros.Add("@unidCancion", direction: ParameterDirection.Output);
@@ -16,34 +16,36 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         parametros.Add("@unidArtista", cancion.artista.idArtista);
         parametros.Add("@unidGenero", cancion.genero.idGenero);
 
-        _conexion.Execute("altaCancion", parametros, commandType: CommandType.StoredProcedure);
+        await _conexion.ExecuteAsync("altaCancion", parametros, commandType: CommandType.StoredProcedure);
 
         cancion.idCancion = parametros.Get<uint>("@unidCancion");
 
         return cancion.idCancion;
     }
 
-    public Cancion? DetalleDe(uint idCancion)
+    public async Task<Cancion?> DetalleDe(uint idCancion)
     {
         var BuscarCancionPorId = @"SELECT * FROM Cancion WHERE idCancion = @idCancion";
 
-        var Buscar = _conexion.QueryFirstOrDefault<Cancion>(BuscarCancionPorId, new {idCancion});
+        var Buscar = await _conexion.QueryFirstOrDefaultAsync<Cancion>(BuscarCancionPorId, new {idCancion});
 
         return Buscar;
     }
 
-    public List<string>? Matcheo(string Cadena)
+    public async Task<List<string>> Matcheo(string Cadena)
     {
         var parametro = new DynamicParameters();
         parametro.Add("@InputCancion", Cadena);
 
-        var Lista = _conexion.Query<string>("MatcheoCancion", parametro, commandType: CommandType.StoredProcedure);
+        var Lista = await _conexion.QueryAsync<string>("MatcheoCancion", parametro, commandType: CommandType.StoredProcedure);
 
         return Lista.ToList();
     }
 
-
-    public List<Cancion> Obtener() => EjecutarSPConReturnDeTipoLista<Cancion>("ObtenerCanciones").ToList();
+    public async Task<List<Cancion>> Obtener() {
+        var task = await EjecutarSPConReturnDeTipoListaAsync<Cancion>("ObtenerCanciones");
+        return task.ToList();
+    }
 
 
 }

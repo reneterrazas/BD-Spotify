@@ -27,7 +27,8 @@ public class RepoSuscripcionTest : TestBase
         var unUsuario = _repoUsuario.Obtener().First();
         var unTipoSuscripcion = _repoTipoSuscripcion.Obtener().First();
 
-        var suscripcion = new Registro{
+        var suscripcion = new Registro
+        {
             usuario = unUsuario,
             tipoSuscripcion = unTipoSuscripcion,
             FechaInicio = DateTime.Now
@@ -50,5 +51,34 @@ public class RepoSuscripcionTest : TestBase
 
         Assert.NotNull(SuscripcionPorId);
         Assert.Equal(idSuscripcion, SuscripcionPorId.idSuscripcion);
+    }
+     [Fact]
+    public async Task ListarAsync_OK()
+    {
+        var repo = new RepoSuscripcion(Conexion);
+        var suscripciones = await repo.ObtenerAsync();
+        Assert.NotNull(suscripciones);
+        Assert.NotEmpty(suscripciones);
+    }
+
+    [Fact]
+    public async Task AltaSuscripcionAsync_Ok()
+    {
+        var repo = new RepoSuscripcion(Conexion);
+        var registro = new Registro { usuario = new Usuario { idUsuario = 1 }, tipoSuscripcion = new TipoSuscripcion { IdTipoSuscripcion = 1 }, FechaInicio = DateTime.Now };
+        var id = await repo.AltaAsync(registro);
+        var suscripciones = await repo.ObtenerAsync();
+        Assert.Contains(suscripciones, s => s.idSuscripcion == id);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    public async Task DetalleDeAsync_OK(uint idSuscripcion)
+    {
+        var repo = new RepoSuscripcion(Conexion);
+        var registro = await repo.DetalleDeAsync(idSuscripcion);
+        Assert.NotNull(registro);
+        Assert.Equal(idSuscripcion, registro.idSuscripcion);
     }
 }

@@ -29,9 +29,9 @@ public class RepoPlaylist : RepoGenerico, IRepoPlaylist
         return Buscar;
     }
 
-    public IList<PlayList> Obtener() => EjecutarSPConReturnDeTipoLista<PlayList>("ObtenerPlayLists").ToList();
+    public List<PlayList> Obtener() => EjecutarSPConReturnDeTipoLista<PlayList>("ObtenerPlayLists").ToList();
 
-    public IList<Cancion>? DetallePlaylist(uint idPlaylist)
+    public List<Cancion>? DetallePlaylist(uint idPlaylist)
     {
         var consultaExistenciaPlaylist = "SELECT COUNT(*) FROM Playlist WHERE idPlaylist = @idPlaylist";
         var noExiste = _conexion.ExecuteScalar<int>(consultaExistenciaPlaylist, new { idPlaylist }) == 0;
@@ -51,45 +51,5 @@ public class RepoPlaylist : RepoGenerico, IRepoPlaylist
 
 
         return canciones;
-    }
-    public async Task<uint> AltaAsync(PlayList playlist)
-    {
-        var parametros = new DynamicParameters();
-        parametros.Add("@unidPlaylist", direction: ParameterDirection.Output);
-        parametros.Add("@unNombre", playlist.Nombre);
-        parametros.Add("@unidUsuario", playlist.usuario.idUsuario);
-
-        await _conexion.ExecuteAsync("altaPlaylist", parametros, commandType: CommandType.StoredProcedure);
-        playlist.idPlaylist = parametros.Get<uint>("@unidPlaylist");
-        return playlist.idPlaylist;
-    }
-
-    public async Task<PlayList> DetalleDeAsync(uint idPlaylist)
-    {
-        var BuscarPlayListPorId = @"SELECT * FROM Playlist WHERE idPlaylist = @idPlaylist";
-        var Buscar = await _conexion.QueryFirstOrDefaultAsync<PlayList>(BuscarPlayListPorId, new { idPlaylist });
-        return Buscar;
-    }
-
-    public async Task<IList<PlayList>> ObtenerAsync()
-    {
-        var result = await EjecutarSPConReturnDeTipoListaAsync<PlayList>("ObtenerPlayLists");
-        return result.ToList();
-    }
-     public async Task<IList<Cancion>?> DetallePlaylistAsync(uint idPlaylist)
-    {
-        var consultaExistenciaPlaylist = "SELECT COUNT(*) FROM Playlist WHERE idPlaylist = @idPlaylist";
-        var noExiste = await _conexion.ExecuteScalarAsync<int>(consultaExistenciaPlaylist, new { idPlaylist }) == 0;
-        if (noExiste)
-        {
-            return null;
-        }
-        var query = @"
-            SELECT c.* 
-            FROM Cancion c
-            JOIN Cancion_Playlist cp ON c.idCancion = cp.idCancion
-            WHERE cp.idPlaylist = @idPlaylist";
-        var canciones = await _conexion.QueryAsync<Cancion>(query, new { idPlaylist });
-        return canciones.ToList();
     }
 } 
