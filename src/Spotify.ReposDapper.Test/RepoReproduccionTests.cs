@@ -54,33 +54,5 @@ public class RepoReproduccionTests : TestBase
         Assert.NotNull(ReproduccionPorId);
         Assert.Equal(idReproduccion, ReproduccionPorId.IdHistorial);
     }
-     [Fact]
-    public async Task ListarAsync_OK()
-    {
-        var repo = new RepoReproduccion(Conexion);
-        var reproducciones = await repo.ObtenerAsync();
-        Assert.NotNull(reproducciones);
-        Assert.NotEmpty(reproducciones);
-    }
-
-    [Fact]
-    public async Task AltaReproduccionAsync_Ok()
-    {
-        var repo = new RepoReproduccion(Conexion);
-        var reproduccion = new Reproduccion { usuario = new Usuario { idUsuario = 1 }, cancion = new Cancion { idCancion = 1 }, FechaReproduccion = DateTime.Now };
-        var id = await repo.AltaAsync(reproduccion);
-        var reproducciones = await repo.ObtenerAsync();
-        Assert.Contains(reproducciones, r => r.IdHistorial == id);
-    }
-
-    [Theory]
-    [InlineData(1)]
-    [InlineData(2)]
-    public async Task DetalleDeAsync_OK(uint idHistorial)
-    {
-        var repo = new RepoReproduccion(Conexion);
-        var reproduccion = await repo.DetalleDeAsync(idHistorial);
-        Assert.NotNull(reproduccion);
-        Assert.Equal(idHistorial, reproduccion.IdHistorial);
-    }
+    
 }

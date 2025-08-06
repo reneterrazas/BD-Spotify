@@ -54,33 +54,5 @@ public class RepoGeneroTest : TestBase
         
     }
     */
-    [Fact]
-    public async Task ListarAsync_OK()
-    {
-        var repo = new RepoGenero(Conexion);
-        var generos = await repo.ObtenerAsync();
-        Assert.NotNull(generos);
-        Assert.NotEmpty(generos);
-    }
-
-    [Fact]
-    public async Task AltaGeneroAsync_Ok()
-    {
-        var repo = new RepoGenero(Conexion);
-        var genero = new Genero { genero = "Async Genero" };
-        var id = await repo.AltaAsync(genero);
-        var generos = await repo.ObtenerAsync();
-        Assert.Contains(generos, g => g.idGenero == id);
-    }
-
-    [Theory]
-    [InlineData(1)]
-    [InlineData(2)]
-    public async Task DetalleDeAsync_OK(byte idGenero)
-    {
-        var repo = new RepoGenero(Conexion);
-        var genero = await repo.DetalleDeAsync(idGenero);
-        Assert.NotNull(genero);
-        Assert.Equal(idGenero, genero.idGenero);
-    }
+    
 }

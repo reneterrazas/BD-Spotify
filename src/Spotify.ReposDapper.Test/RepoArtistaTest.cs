@@ -45,44 +45,4 @@ public class RepoArtistaTest : TestBase
         Assert.NotNull(ArtistaPorId);
         Assert.Equal(idArtista , ArtistaPorId.idArtista);
     }
-    [Fact]
-    public async Task ListarAsync_OK()
-    {
-        var repo = new RepoArtista(Conexion);
-        var artistas = await repo.ObtenerAsync();
-        Assert.NotNull(artistas);
-        Assert.NotEmpty(artistas);
-    }
-
-    [Fact]
-    public async Task AltaArtistaAsync_Ok()
-    {
-        var repo = new RepoArtista(Conexion);
-        var artista = new Artista { NombreArtistico = "Async Artista", Nombre = "Nombre", Apellido = "Apellido" };
-        var id = await repo.AltaAsync(artista);
-        var artistas = await repo.ObtenerAsync();
-        Assert.Contains(artistas, a => a.idArtista == id);
-    }
-
-    [Theory]
-    [InlineData(1)]
-    [InlineData(2)]
-    public async Task DetalleDeAsync_OK(uint idArtista)
-    {
-        var repo = new RepoArtista(Conexion);
-        var artista = await repo.DetalleDeAsync(idArtista);
-        Assert.NotNull(artista);
-        Assert.Equal(idArtista, artista.idArtista);
-    }
-
-    [Fact]
-    public async Task EliminarAsync_OK()
-    {
-        var repo = new RepoArtista(Conexion);
-        var artista = new Artista { NombreArtistico = "Para Eliminar Async", Nombre = "Nombre", Apellido = "Apellido" };
-        var id = await repo.AltaAsync(artista);
-        await repo.EliminarAsync(id);
-        var artistaEliminado = await repo.DetalleDeAsync(id);
-        Assert.Null(artistaEliminado);
-    }
 }

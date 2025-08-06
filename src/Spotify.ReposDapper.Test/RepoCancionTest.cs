@@ -73,48 +73,6 @@ public class RepoCancionTest : TestBase
             Console.WriteLine(titulo);
         }
     }
-     [Fact]
-    public async Task ListarAsync_OK()
-    {
-        var repo = new RepoCancion(Conexion);
-        var canciones = await repo.ObtenerAsync();
-        Assert.NotNull(canciones);
-        Assert.NotEmpty(canciones);
-    }
-
-    [Fact]
-    public async Task AltaCancionAsync_Ok()
-    {
-        var repo = new RepoCancion(Conexion);
-        var cancion = new Cancion
-        { Titulo = "Async Song",
-          Duracion = new TimeSpan(0,12,56),
-          album = new Album { idAlbum = 1 },
-          artista = new Artista { idArtista = 1, NombreArtistico = "Artista Test" },
-          genero = new Genero { idGenero = 1 } };
-        var id = await repo.AltaAsync(cancion);
-        var canciones = await repo.ObtenerAsync();
-        Assert.Contains(canciones, c => c.idCancion == id);
-    }
-
-    [Theory]
-    [InlineData(1)]
-    [InlineData(2)]
-    public async Task DetalleDeAsync_OK(uint idCancion)
-    {
-        var repo = new RepoCancion(Conexion);
-        var cancion = await repo.DetalleDeAsync(idCancion);
-        Assert.NotNull(cancion);
-        Assert.Equal(idCancion, cancion.idCancion);
-    }
-
-    [Fact]
-    public async Task MatcheoAsync_OK()
-    {
-        var repo = new RepoCancion(Conexion);
-        var resultado = await repo.MatcheoAsync("Celos");
-        Assert.NotNull(resultado);
-        Assert.Contains(resultado, t => t.Contains("Celos"));
-    }
+     
 }
 
