@@ -19,7 +19,9 @@
   <ProjectReference Include="..\src\Spotify.ReposDapper\Spotify.ReposDapper.csproj" />
   <ProjectReference Include="..\src\Spotify.ReposDapper.Test\Spotify.ReposDapper.Test.csproj" />
 </ItemGroup>
-
+<ItemGroup>
+  <PackageReference Include="Scalar.AspNetCore" Version="2.4.13" />
+</ItemGroup>
 </Project>
 
 
