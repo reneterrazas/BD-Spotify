@@ -19,11 +19,22 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
 
     public Album? DetalleDe(uint idAlbum)
     {
-        string consultarAlbum = @"SELECT * FROM Album WHERE idAlbum = @idAlbum";
-
-        var Album = _conexion.QuerySingleOrDefault<Album>(consultarAlbum, new { idAlbum });
-
-        return Album;
+        string sql = @"
+            SELECT * FROM Album WHERE idAlbum = @idAlbum;
+            SELECT * FROM Artista WHERE idArtista = (
+                SELECT idArtista FROM Album WHERE idAlbum = @idAlbum
+            );
+        ";
+    
+        using var multi = _conexion.QueryMultiple(sql, new { idAlbum });
+    
+        var album = multi.ReadSingleOrDefault<Album>();
+        if (album is not null)
+        {
+            album.artista = multi.ReadSingleOrDefault<Artista>();
+        }
+    
+        return album;
     }
 
     public void Eliminar(uint idAlbum)
