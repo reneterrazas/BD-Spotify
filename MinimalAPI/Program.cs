@@ -1,19 +1,30 @@
-using System.Data;
 using Scalar.AspNetCore;
-using Spotify.Core;
+using System.Data;
 using MySqlConnector;
+using Spotify.Core;
 using Spotify.ReposDapper;
 using Spotify.Core.Persistencia;
+
 var builder = WebApplication.CreateBuilder(args);
-//Obtener la cadena de conexion desde appsettings.json
+
+// Obtener la cadena de conexión desde appsettings.json
 var connectionString = builder.Configuration.GetConnectionString("MySQL");
+
+// Registrar IDbConnection para inyección de dependencias
 builder.Services.AddScoped<IDbConnection>(sp => new MySqlConnection(connectionString));
-builder.Services.AddScoped<IRepoAlbum, RepoAlbum>();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-app.Run();
+// Endpoints para Artista
 app.MapGet("/artistas", async (IDbConnection db) =>
 {
     var repo = new RepoArtistaAsync(db);
@@ -34,3 +45,27 @@ app.MapPost("/artistas", async (Artista artista, IDbConnection db) =>
     var id = await repo.Alta(artista);
     return Results.Created($"/artistas/{id}", artista);
 });
+
+// Endpoints para Album
+app.MapGet("/albums", async (IDbConnection db) =>
+{
+    var repo = new RepoAlbumAsync(db);
+    var albums = await repo.Obtener();
+    return Results.Ok(albums);
+});
+
+app.MapGet("/albums/{id}", async (uint id, IDbConnection db) =>
+{
+    var repo = new RepoAlbumAsync(db);
+    var album = await repo.DetalleDe(id);
+    return album is not null ? Results.Ok(album) : Results.NotFound();
+});
+
+app.MapPost("/albums", async (Album album, IDbConnection db) =>
+{
+    var repo = new RepoAlbumAsync(db);
+    var id = await repo.Alta(album);
+    return Results.Created($"/albums/{id}", album);
+});
+
+app.Run();
