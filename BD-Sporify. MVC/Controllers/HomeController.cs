@@ -26,6 +26,12 @@ public class HomeController : Controller
         return View();
     }
 
+    [HttpPost]
+    public async Task<IActionResult> Alta()
+    {
+        
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
