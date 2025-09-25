@@ -5,7 +5,7 @@ using Spotify.Core.Persistencia;
 
 namespace BD_Sporify._MVC.Controllers;
 
-public class ControllersAlbum : Controller
-[
+public class ControllersAlbum : Controller 
+ {
     
-]
+ }

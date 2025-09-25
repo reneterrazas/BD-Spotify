@@ -2,8 +2,9 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using BD_Sporify._MVC.Models;
 using Spotify.Core.Persistencia;
+using Spotify.ReposDapper;
 
-namespace BD_Sporify._MVC.Controllers;
+
 
 public class HomeController : Controller
 {
@@ -18,7 +19,9 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {   
         var artistas = await repoArtista.Obtener();
-        return View(artistas);
+        var ArtistaVidewModels = new ArtistaViewModel();
+        ArtistaVidewModels.artistas = artistas;
+        return View(ArtistaVidewModels);
     }
 
     public IActionResult Privacy()
@@ -27,9 +30,17 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Alta()
+
+
+    public async Task<IActionResult> Index(ArtistaViewModel model)
+
+
     {
-        
+
+        var altaArtista = await repoArtista.Alta(model.artista);
+        model.artistas = await repoArtista.Obtener();
+
+        return View(model);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
