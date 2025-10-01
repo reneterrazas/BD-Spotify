@@ -1,16 +1,8 @@
-﻿@using Spotify.Core
+@using Spotify.Core
 @model ArtistaViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Artista";
 }
-
-<div class="container">
-
-    <!-- Header -->
-    <div class="text-center header">
-        <h1 class="display-4">Bienvenido a Spotify</h1>
-    </div>
-    
     <!-- Formulario de Alta de Artista -->
     <div class="form-card">
         <h2>Alta de Artista</h2>
@@ -30,18 +22,4 @@
             <button type="submit" class="btn">Enviar</button>
         </form>
     </div>
-
-    <!-- Lista de Artistas -->
-    <div class="artist-list">
-        <h2>Lista de Artistas</h2>
-        <ul>
-            @foreach (Artista artista in Model.artistas)
-            {
-                <li class="artist-card">
-                    <span class="artist-name">@artista.Nombre (@artista.NombreArtistico)</span>
-                </li>
-            }
-        </ul>
-    </div>
-
-</div>
+    
