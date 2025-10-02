@@ -32,12 +32,8 @@ public class ArtistaController : Controller
     [HttpPost]
     public async Task<IActionResult> Index(ArtistaViewModel model)
     {
-        if (ModelState.IsValid)
-        {
-            await repoArtista.Alta(model.artista);
-        }
-
-        // Actualizamos lista después del alta
+        
+       var altaArtista = await repoArtista.Alta(model.artista);
         model.artistas = await repoArtista.Obtener();
 
         return View(model);
