@@ -4,6 +4,8 @@ using MySqlConnector;
 using Spotify.Core;
 using Spotify.ReposDapper;
 using Spotify.Core.Persistencia;
+using MinimalAPI.DTOs;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +34,14 @@ app.MapGet("/artistas", async (IDbConnection db) =>
 {
     var repo = new RepoArtistaAsync(db);
     var artistas = await repo.Obtener();
-    return Results.Ok(artistas);
+
+    // Mapear Entidad → DTO
+    var result = artistas.Select(a => new ArtistaDto(
+        a.idArtista,
+        a.NombreArtistico
+    ));
+
+    return Results.Ok(result);
 });
 
 app.MapGet("/artistas/{id}", async (uint id, IDbConnection db) =>
@@ -71,4 +80,4 @@ app.MapPost("/albums", async (Album album, IDbConnection db) =>
     return Results.Created($"/albums/{id}", album);
 });
 
-app.Run();
+app.Run(); 

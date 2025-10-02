@@ -9,39 +9,9 @@
     <!-- Header -->
     <div class="text-center header">
         <h1 class="display-4">Bienvenido a Spotify</h1>
-    </div>
-    
-    <!-- Formulario de Alta de Artista -->
-    <div class="form-card">
-        <h2>Alta de Artista</h2>
-        <form asp-action="Index" method="post">
-            <div class="form-group">
-                <label asp-for="artista.Nombre">Nombre</label>
-                <input asp-for="artista.Nombre" placeholder="Nombre" class="form-control"/>
-            </div>
-            <div class="form-group">
-                <label asp-for="artista.Apellido">Apellido</label>
-                <input asp-for="artista.Apellido" placeholder="Apellido" class="form-control"/>
-            </div>
-            <div class="form-group">
-                <label asp-for="artista.NombreArtistico">Nombre Artístico</label>
-                <input asp-for="artista.NombreArtistico" placeholder="Nombre artístico" class="form-control"/>
-            </div>
-            <button type="submit" class="btn">Enviar</button>
-        </form>
-    </div>
+     <p>Usa el botón de abajo para gestionar los artistas.</p>
 
-    <!-- Lista de Artistas -->
-    <div class="artist-list">
-        <h2>Lista de Artistas</h2>
-        <ul>
-            @foreach (Artista artista in Model.artistas)
-            {
-                <li class="artist-card">
-                    <span class="artist-name">@artista.Nombre (@artista.NombreArtistico)</span>
-                </li>
-            }
-        </ul>
+    <a asp-controller="Artista" asp-action="Index" class="btn btn-primary">
+        Ir a Artistas
+    </a>
     </div>
-
-</div>
