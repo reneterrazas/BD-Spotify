@@ -4,29 +4,6 @@
 @{
     ViewData["Title"] = "Artista";
 }
-
-<!-- Formulario de Alta de Artista -->
-<div class="form-card">
-    <h2>Alta de Artista</h2>
-    <form asp-action="Index" method="post">
-        <div class="form-group">
-            <label asp-for="artista.Nombre">Nombre</label>
-            <input asp-for="artista.Nombre" placeholder="Nombre" class="form-control"/>
-        </div>
-        <div class="form-group">
-            <label asp-for="artista.Apellido">Apellido</label>
-            <input asp-for="artista.Apellido" placeholder="Apellido" class="form-control"/>
-        </div>
-        <div class="form-group">
-            <label asp-for="artista.NombreArtistico">Nombre Artístico</label>
-            <input asp-for="artista.NombreArtistico" placeholder="Nombre artístico" class="form-control"/>
-        </div>
-        <button type="submit" class="btn btn-primary">Enviar</button>
-    </form>
-</div>
-
-<hr />
-
 <!-- Listado de Artistas -->
 <div class="list-card">
     <h2>Listado de Artistas</h2>
