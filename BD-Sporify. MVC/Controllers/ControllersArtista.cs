@@ -28,9 +28,12 @@ public class ArtistaController : Controller
         return View(viewModel);
     }
 
+    [HttpGet]
+    public IActionResult CreateArtista() => View();
     // POST: Artista/Index (para dar de alta un artista)
+    
     [HttpPost]
-    public async Task<IActionResult> Index(ArtistaViewModel model)
+    public async Task<IActionResult> CreateArtista(ArtistaViewModel model)
     {
         
        var altaArtista = await repoArtista.Alta(model.artista);

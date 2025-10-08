@@ -28,12 +28,9 @@ namespace SpotifyMVC.Controllers
         public async Task<IActionResult> Index()
         {
 
-            var vm = new AlbumViewModel
-            {
-                artistas = await repoArtista.Obtener()
-            };
+            var albums = await repoAlbum.Obtener();
 
-            return View(vm);
+            return View(albums);
         }
 
         // POST: dar de alta álbum
