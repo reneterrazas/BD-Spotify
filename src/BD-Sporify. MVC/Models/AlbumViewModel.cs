@@ -3,7 +3,7 @@ using Spotify.Core;
 
 namespace BD_Sporify._MVC.Models
 {
-   namespace SpotifyMVC.Models
+namespace SpotifyMVC.Models
 {
     public class AlbumViewModel
     {

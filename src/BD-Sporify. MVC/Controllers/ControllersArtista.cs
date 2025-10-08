@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using BD_Sporify._MVC.Models;
 using Spotify.Core.Persistencia;
 using Spotify.ReposDapper;
+using Spotify.Core;
 
 public class ArtistaController : Controller
 {
@@ -20,26 +21,20 @@ public class ArtistaController : Controller
     {
         var artistas = await repoArtista.Obtener();
 
-        var viewModel = new ArtistaViewModel
-        {
-            artistas = artistas
-        };
-
-        return View(viewModel);
+        return View(artistas);
     }
 
     [HttpGet]
     public IActionResult CreateArtista() => View();
     // POST: Artista/Index (para dar de alta un artista)
-    
+
     [HttpPost]
-    public async Task<IActionResult> CreateArtista(ArtistaViewModel model)
+    public async Task<IActionResult> CreateArtista(Artista artista)
     {
         
-       var altaArtista = await repoArtista.Alta(model.artista);
-        model.artistas = await repoArtista.Obtener();
+    var altaArtista = await repoArtista.Alta(artista);
 
-        return View(model);
+        return RedirectToAction("Index");
     }
     // GET: Artista/Detalle/5
 public async Task<IActionResult> Detalle(int id)

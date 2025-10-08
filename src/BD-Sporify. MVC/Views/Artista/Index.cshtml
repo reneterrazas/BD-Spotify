@@ -1,5 +1,5 @@
 @using Spotify.Core
-@model BD_Sporify._MVC.Models.ArtistaViewModel
+@model List<Artista>
 
 @{
     ViewData["Title"] = "Artista";
@@ -8,7 +8,7 @@
 <div class="list-card">
     <h2>Listado de Artistas</h2>
 
-    @if (Model.artistas != null && Model.artistas.Any())
+    @if (Model != null && Model.Any())
     {
         <table class="table table-hover table-bordered table-success">
             <thead>
@@ -20,10 +20,10 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var artista in Model.artistas)
+                @foreach (var artista in Model)
                 {
                     <tr>
-                        <td>@artista.idArtista</td>
+                        <td><a asp-id-route="idArtista" asp-action="DetalleArtista"> @artista.idArtista</a></td>
                         <td>@artista.Nombre</td>
                         <td>@artista.Apellido</td>
                         <td>@artista.NombreArtistico</td>

@@ -1,0 +1,25 @@
+@using Spotify.Core
+@model Artista
+
+@{
+    ViewData["Title"] = "CrearArtista";
+}
+<!-- Formulario de Alta de Artista -->
+<div class="form-card">
+    <h2>Alta de Artista</h2>
+    <form asp-action="CreateArtista" method="post">
+        <div class="form-group">
+            <label asp-for="@Model.Nombre">Nombre</label>
+            <input asp-for="@Model.Nombre" placeholder="Nombre" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Apellido">Apellido</label>
+            <input asp-for="@Model.Apellido" placeholder="Apellido" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.NombreArtistico">Nombre Artístico</label>
+            <input asp-for="@Model.NombreArtistico" placeholder="Nombre artístico" class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+</div>
