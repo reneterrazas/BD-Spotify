@@ -1,0 +1,22 @@
+@using Spotify.Core
+@model Album
+@{
+    ViewData["Title"] = "DetalleAlbum";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+@if (Model != null)
+{
+    <div>
+        <h2>Titulo del album: @Model.Titulo</h2>
+        <p>Titulo: @Model.Titulo</p>
+        <p>Fecha de Lanzamiento: @Model.FechaLanzamiento.ToString("dd/MM/yyyy")</p>
+        <p>Artista: @Model.artista.NombreArtistico</p>
+    </div>
+}
+else
+{
+    <p>No se encontró información del Album.</p>
+}

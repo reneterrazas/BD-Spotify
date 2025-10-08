@@ -23,8 +23,8 @@
                 @foreach (var artista in Model)
                 {
                     <tr>
-                        <td><a asp-id-route="idArtista" asp-action="DetalleArtista"> @artista.idArtista</a></td>
-                        <td>@artista.Nombre</td>
+                        <td> @artista.idArtista</td>
+                        <td><a asp-route-id="@artista.idArtista" asp-action="DetalleDeArtista">@artista.Nombre</a></td>
                         <td>@artista.Apellido</td>
                         <td>@artista.NombreArtistico</td>
                     </tr>

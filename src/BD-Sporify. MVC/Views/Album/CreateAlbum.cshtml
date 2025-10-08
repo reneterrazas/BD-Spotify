@@ -1,0 +1,27 @@
+@using Spotify.Core
+@model BD_Sporify._MVC.Models.AlbumViewModel
+
+@{
+    ViewData["Title"] = "CrearAlbum";
+}
+
+<div class="form-card">
+    <h2>Alta de Album</h2>
+    <form asp-action="CreateAlbum" method="post">
+        <div class="form-group">
+            <label asp-for="@Model.Titulo">Nombre</label>
+            <input asp-for="@Model.Titulo" placeholder="Titulo" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.FechaLanzamiento">Fecha de Lanzamiento</label>
+            <input asp-for="@Model.FechaLanzamiento" type="date" placeholder="Apellido" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label>Artista</label>
+            <select asp-for="ArtistaId" asp-items="@(new SelectList(Model.artistas, "idArtista", "Nombre"))">
+                <option value="">-- Selecciona un artista --</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+</div>

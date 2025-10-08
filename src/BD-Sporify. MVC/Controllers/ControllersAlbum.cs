@@ -3,7 +3,7 @@ using BD_Sporify._MVC.Models;
 using Spotify.Core;
 using Spotify.Core.Persistencia;
 using Spotify.ReposDapper;
-using BD_Sporify._MVC.Models.SpotifyMVC.Models;
+
 
 
 namespace SpotifyMVC.Controllers
@@ -32,10 +32,19 @@ namespace SpotifyMVC.Controllers
 
             return View(albums);
         }
+        [HttpGet]
+        public async Task<IActionResult> CreateAlbum(){
+            
+            var vm = new AlbumViewModel{
+                artistas = await repoArtista.Obtener()
+            };
+
+            return View(vm);
+        }
 
         // POST: dar de alta álbum
         [HttpPost]
-        public async Task<IActionResult> CrearAlbum(AlbumViewModel model)
+        public async Task<IActionResult> CreateAlbum(AlbumViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -51,13 +60,20 @@ namespace SpotifyMVC.Controllers
                 };
 
                 await repoAlbum.Alta(album);
-                return RedirectToAction();
+                return RedirectToAction("Index");
             }
 
-            // Si hay error, recargar lista de artistas
             model.artistas = await repoArtista.Obtener();
             return View(model);
         }
 
+    
+    [HttpGet]
+    public async Task<IActionResult> DetalleAlbum(uint id){
+        
+        var album = await repoAlbum.DetalleDe(id);
+
+        return View(album);
+    }
     }
 }

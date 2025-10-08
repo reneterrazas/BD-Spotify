@@ -18,9 +18,10 @@
             @foreach (var album in Model)
             {
                 <tr>
-                    <td>@album.Titulo</td>
+                    <td><a asp-route-id="@album.idAlbum" asp-action="DetalleAlbum">@album.Titulo</a></td>
                 </tr>
             }
         </tbody>
     </table>
+    <button class="btn btn-primary"><a asp-action="CreateAlbum">Crear Album</a></button>
 </div>

@@ -36,17 +36,16 @@ public class ArtistaController : Controller
 
         return RedirectToAction("Index");
     }
-    // GET: Artista/Detalle/5
-public async Task<IActionResult> Detalle(int id)
-{
-    var artista = await repoArtista.DetalleDe((uint)id);
-
-    if (artista == null)
+    
+    public async Task<IActionResult> DetalleDeArtista(uint id)
     {
-        return NotFound(); 
+        var artista = await repoArtista.DetalleDe(id);
+
+        if (artista == null)
+            return NotFound();
+
+        return View(artista); 
     }
 
-    return View(artista);
-}
 
 }
