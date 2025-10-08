@@ -20,6 +20,7 @@ builder.Services.AddScoped<IRepoArtistaAsync, RepoArtistaAsync>();
 builder.Services.AddScoped<IRepoGeneroAsync, RepoGeneroAsync>();
 builder.Services.AddScoped<IRepoAlbumAsync, RepoAlbumAsync>();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,0 +1,19 @@
+@model Spotify.Core.Genero
+
+@{
+    ViewData["Title"] = "Detalle de Genero";
+}
+
+<h1>Detalle del Genero</h1>
+
+@if (Model != null)
+{
+    <div>
+        <h2>Id: @Model.idGenero</h2>
+        <h2>Nombre: @Model.genero</h2>
+    </div>
+}
+else
+{
+    <p>No se encontró información del Genero.</p>
+}
