@@ -11,7 +11,7 @@ public class RepoCancionAsync : RepoGenerico, IRepoCancionAsync
         var parametros = new DynamicParameters();
         parametros.Add("@unidCancion", direction: ParameterDirection.Output);
         parametros.Add("@unTitulo", cancion.Titulo);
-        parametros.Add("@unDuration", cancion.Duracion);
+        parametros.Add("@unDuration", cancion.duration);
         parametros.Add("@unidAlbum", cancion.album.idAlbum);
         parametros.Add("@unidArtista", cancion.artista.idArtista);
         parametros.Add("@unidGenero", cancion.genero.idGenero);
@@ -25,11 +25,29 @@ public class RepoCancionAsync : RepoGenerico, IRepoCancionAsync
 
     public async Task<Cancion?> DetalleDe(uint idCancion)
     {
-        var BuscarCancionPorId = @"SELECT * FROM Cancion WHERE idCancion = @idCancion";
+        string sql = @"
+            SELECT *
+            FROM Cancion c
+            JOIN Artista ar ON c.idArtista = ar.idArtista
+            JOIN Album a ON c.idAlbum = a.idAlbum
+            JOIN Genero g ON c.idGenero = g.idGenero
+            WHERE c.idCancion = @idCancion;
+        ";
 
-        var Buscar = await _conexion.QueryFirstOrDefaultAsync<Cancion>(BuscarCancionPorId, new {idCancion});
+        var resultado = await _conexion.QueryAsync<Cancion, Artista, Album, Genero, Cancion>(
+            sql,
+            (cancion, artista, album, genero) =>
+            {
+                cancion.artista = artista;
+                cancion.album = album;
+                cancion.genero = genero;
+                return cancion;
+            },
+            new { idCancion },
+            splitOn: "idArtista,idAlbum,idGenero"
+        );
 
-        return Buscar;
+        return resultado.FirstOrDefault();
     }
 
     public async Task<List<string>> Matcheo(string Cadena)
@@ -46,6 +64,6 @@ public class RepoCancionAsync : RepoGenerico, IRepoCancionAsync
         var task = await EjecutarSPConReturnDeTipoListaAsync<Cancion>("ObtenerCanciones");
         return task.ToList();
     }
-
+        
 
 }

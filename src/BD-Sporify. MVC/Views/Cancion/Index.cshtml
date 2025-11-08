@@ -1,0 +1,30 @@
+@using Spotify.Core
+@model List<Cancion>
+
+@{
+    ViewData["Title"] = "Canciones";
+}
+
+<div class="list-card">
+    <h1>Listado de Canciones</h1>
+
+    <table class="table table-hover table-bordered table-success">
+        <thead>
+            <tr>
+                <th>Titulo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cancion in Model)
+            {
+                <tr>
+                    <td><a asp-route-id="@cancion.idCancion" asp-action="DetalleCancion">@cancion.Titulo</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button class="btn btn-primary">
+    <a asp-action="CreateCancion" class="text-white text-decoration-none">Crear Cancion</a>
+</button>
+
+</div>

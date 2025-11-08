@@ -9,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("MySQL");
 
+Console.WriteLine(connectionString);
+
 // Registrar IDbConnection para inyección de dependencias
 builder.Services.AddScoped<IDbConnection>(sp => new MySqlConnection(connectionString));
 
@@ -19,6 +21,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IRepoArtistaAsync, RepoArtistaAsync>();
 builder.Services.AddScoped<IRepoGeneroAsync, RepoGeneroAsync>();
 builder.Services.AddScoped<IRepoAlbumAsync, RepoAlbumAsync>();
+builder.Services.AddScoped<IRepoCancionAsync, RepoCancionAsync>();
 
 
 var app = builder.Build();
