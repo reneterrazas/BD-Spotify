@@ -1,0 +1,22 @@
+@using Spotify.Core
+@model TipoSuscripcion
+@{
+    ViewData["Title"] = "Detalle del TipoSuscripcion";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+@if (Model != null)
+{
+    <div>
+        <h2>Titulo del TipoSuscripcion: @Model.Tipo</h2>
+        <p>Precio: @Model.Costo</p>
+        <p>Duracion de la suscripcion: @Model.Duracion</p>
+        <p>Id: @Model.IdTipoSuscripcion</p>
+    </div>
+}
+else
+{
+    <p>No se encontró información del TipoSuscripcion.</p>
+}

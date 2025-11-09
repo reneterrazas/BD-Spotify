@@ -1,0 +1,17 @@
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model Spotify.Core.Nacionalidad
+
+@{
+    ViewData["Title"] = "Crear Nacionalidad";
+}
+
+<div class="form-card">
+    <h2>Alta de Nacionalidad</h2>
+    <form asp-action="CreateNacionalidad" method="post">
+        <div class="form-group">
+            <label asp-for="Pais">Nombre del pais</label>
+            <input asp-for="Pais" placeholder="Nombre" class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+</div>

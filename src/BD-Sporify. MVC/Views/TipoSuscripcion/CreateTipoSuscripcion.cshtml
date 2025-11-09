@@ -1,0 +1,25 @@
+@using Spotify.Core
+@model TipoSuscripcion
+
+@{
+    ViewData["Title"] = "Crear Tipo Suscripcion";
+}
+<!-- Formulario de Alta de Artista -->
+<div class="form-card">
+    <h2>Alta de TipoSuscripcion</h2>
+    <form asp-action="CreateTipoSuscripcion" method="post">
+        <div class="form-group">
+            <label asp-for="@Model.Tipo"></label>
+            <input asp-for="@Model.Tipo" placeholder="Tipo" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Duracion">Duracion de la suscripcion</label>
+            <input type="number" asp-for="@Model.Duracion" placeholder="Duracion" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Costo">Precio</label>
+            <input type="number" asp-for="@Model.Costo" placeholder="Costo de la suscripcion" class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+</div>

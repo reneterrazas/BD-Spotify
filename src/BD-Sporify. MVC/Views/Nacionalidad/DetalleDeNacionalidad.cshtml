@@ -1,0 +1,19 @@
+@model Spotify.Core.Nacionalidad
+
+@{
+    ViewData["Title"] = "Detalle de Nacionalidad";
+}
+
+<h1>Detalle de la Nacionalidad</h1>
+
+@if (Model != null)
+{
+    <div>
+        <h2>Id: @Model.idNacionalidad</h2>
+        <h2>Pais: @Model.Pais</h2>
+    </div>
+}
+else
+{
+    <p>No se encontró información de la nacionalidad.</p>
+}

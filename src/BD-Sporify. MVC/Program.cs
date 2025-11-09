@@ -22,7 +22,8 @@ builder.Services.AddScoped<IRepoArtistaAsync, RepoArtistaAsync>();
 builder.Services.AddScoped<IRepoGeneroAsync, RepoGeneroAsync>();
 builder.Services.AddScoped<IRepoAlbumAsync, RepoAlbumAsync>();
 builder.Services.AddScoped<IRepoCancionAsync, RepoCancionAsync>();
-
+builder.Services.AddScoped<IRepoNacionalidadAsync, RepoNacionalidadAsync>();
+builder.Services.AddScoped<IRepoTipoSuscripcionAsync, RepoTipoSuscripcionAsync>();
 
 var app = builder.Build();
 

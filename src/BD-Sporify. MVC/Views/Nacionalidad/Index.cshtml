@@ -1,0 +1,30 @@
+@using Spotify.Core
+@model List<Nacionalidad>
+
+@{
+    ViewData["Title"] = "Generos";
+}
+
+<div class="list-card">
+    <h1>Listado de Paises</h1>
+
+    <table class="table table-hover table-bordered table-success">
+        <thead>
+            <tr>
+                <th>Paises</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var nacionalidad in Model)
+            {
+                <tr>
+                    <td><a asp-route-id="@nacionalidad.idNacionalidad" asp-action="DetalleDeNacionalidad">@nacionalidad.Pais</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+   <button type="button" class="btn btn-primary">
+    <a asp-action="CreateNacionalidad" class="text-white text-decoration-none">Crear Nacionalidad</a>
+</button>
+
+</div>

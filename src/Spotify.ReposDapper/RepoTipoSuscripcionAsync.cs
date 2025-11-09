@@ -1,11 +1,14 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection.Metadata.Ecma335;
+
 namespace Spotify.ReposDapper;
 
-public class RepoTipoSuscripcionAsync : RepoGenerico, IRepoTipoSuscripcion
+public class RepoTipoSuscripcionAsync : RepoGenerico, IRepoTipoSuscripcionAsync
 {
     public RepoTipoSuscripcionAsync(IDbConnection conexion) 
         : base(conexion) {}
 
-    public uint Alta(TipoSuscripcion tipoSuscripcion)
+    public async Task<uint> Alta(TipoSuscripcion tipoSuscripcion)
     {
         var parametros = new DynamicParameters();
         parametros.Add("@unidTipoSuscripcion", direction: ParameterDirection.Output);
@@ -13,14 +16,14 @@ public class RepoTipoSuscripcionAsync : RepoGenerico, IRepoTipoSuscripcion
         parametros.Add("@unaDuracion", tipoSuscripcion.Duracion);
         parametros.Add("@UntipoSuscripcion", tipoSuscripcion.Tipo);
 
-        _conexion.Execute("altaTipoSuscripcion", parametros, commandType: CommandType.StoredProcedure);
+        await _conexion.ExecuteAsync("altaTipoSuscripcion", parametros, commandType: CommandType.StoredProcedure);
 
         tipoSuscripcion.IdTipoSuscripcion = parametros.Get<uint>("@unidTipoSuscripcion");
 
         return tipoSuscripcion.IdTipoSuscripcion;
     }
 
-    public TipoSuscripcion DetalleDe(uint idTipoSuscripcion)
+    public Task<TipoSuscripcion> DetalleDe(uint idTipoSuscripcion)
     {
         var BuscarTipoSuscripcionPorId = @"
         Select * 
@@ -28,11 +31,13 @@ public class RepoTipoSuscripcionAsync : RepoGenerico, IRepoTipoSuscripcion
         Where idTipoSuscripcion = @idTipoSuscripcion
         ";
         
-        var TipoSuscripcion = _conexion.QueryFirstOrDefault<TipoSuscripcion>(BuscarTipoSuscripcionPorId, new {idTipoSuscripcion});
+        var TipoSuscripcion = _conexion.QueryFirstOrDefaultAsync<TipoSuscripcion>(BuscarTipoSuscripcionPorId, new {idTipoSuscripcion});
 
         return TipoSuscripcion;
     }
 
-    public List<TipoSuscripcion> Obtener() => EjecutarSPConReturnDeTipoLista<TipoSuscripcion>("ObtenerTipoSuscripciones").ToList();
-
+    public async Task<List<TipoSuscripcion>> Obtener() {
+        var tipoSuscripciones = await EjecutarSPConReturnDeTipoListaAsync<TipoSuscripcion>("ObtenerTipoSuscripciones");
+        return tipoSuscripciones.ToList();
+    }
 }
