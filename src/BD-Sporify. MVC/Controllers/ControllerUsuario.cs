@@ -55,7 +55,7 @@ namespace SpotifyMVC.Controllers
                 var usuario = new Usuario
                 {
                     NombreUsuario = model.NombreUsuario,
-                    Gmail = model.Email,
+                    Email = model.Email,
                     Contrasenia = model.Contraseña,
                     nacionalidad = nacionalidadSeleccionada
                 };
@@ -68,11 +68,18 @@ namespace SpotifyMVC.Controllers
             return View(model);
         }
 
-    
-    [HttpGet]
-    public async Task<IActionResult> DetalleUsuario(uint id){
-        
-        var usuario = await repoUsuario.DetalleDe(id);
+
+        [HttpGet]
+        public async Task<IActionResult> DetalleUsuario(uint id) {
+
+            var usuario = await repoUsuario.DetalleDe(id);
+            
+
+
+            if (string.IsNullOrEmpty(usuario.Email))
+            {
+                throw new Exception("No hay email");
+            }
 
         return View(usuario);
     }

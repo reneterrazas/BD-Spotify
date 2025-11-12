@@ -16,7 +16,7 @@ public class RepoUsuarioAsync : RepoGenerico, IRepoUsuarioAsinc
         parametros.Add("@unidUsuario", direction: ParameterDirection.Output);
         parametros.Add("@unNombreUsuario", usuario.NombreUsuario);
         parametros.Add("@unaContrasenia", usuario.Contrasenia);
-        parametros.Add("@unEmail", usuario.Gmail);
+        parametros.Add("@unEmail", usuario.Email);
         parametros.Add("@unidNacionalidad", usuario.nacionalidad.idNacionalidad);
 
         await _conexion.ExecuteAsync("altaUsuario", parametros, commandType: CommandType.StoredProcedure);
