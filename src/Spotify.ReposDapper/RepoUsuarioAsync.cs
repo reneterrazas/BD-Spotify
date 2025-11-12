@@ -27,9 +27,23 @@ public class RepoUsuarioAsync : RepoGenerico, IRepoUsuarioAsinc
 
     public async Task<Usuario?> DetalleDe(uint idUsuario)
     {
-        string query = "SELECT * FROM Usuario WHERE idUsuario = @idUsuario";
-        var usuario = await _conexion.QueryFirstOrDefaultAsync<Usuario>(query, new { idUsuario });
-        return usuario;
+        string sql = @"
+        SELECT *
+        FROM Usuario u
+        JOIN Nacionalidad Na ON u.idNacionalidad = Na.idNacionalidad 
+        WHERE idUsuario = @idUsuario";
+
+        var resultado = await _conexion.QueryAsync<Usuario, Nacionalidad, Usuario>(
+            sql,
+            (usuario,nacionalidad) =>
+            {
+                usuario.nacionalidad = nacionalidad;
+                return usuario;
+            },
+            new {idUsuario},
+            splitOn: "idNacionalidad"
+        );
+        return resultado.FirstOrDefault();
     }
 
     public async Task<List<Usuario>> Obtener()

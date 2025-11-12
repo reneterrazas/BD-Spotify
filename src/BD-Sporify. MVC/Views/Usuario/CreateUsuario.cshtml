@@ -1,0 +1,32 @@
+@using Spotify.Core
+@model BD_Sporify._MVC.Models.UsuarioViewModel
+
+@{
+    ViewData["Title"] = "CrearAlbum";
+}
+
+<div class="form-card">
+    <h2>Alta de Usuario</h2>
+    <form asp-action="CreateUsuario" method="post">
+        <div class="form-group">
+            <label asp-for="@Model.NombreUsuario">User name</label>
+            <input asp-for="@Model.NombreUsuario" placeholder="UserName" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Email">Email</label>
+            <input asp-for="@Model.Email" type="email" placeholder="Email" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Contraseña">Contraseña</label>
+            <input asp-for="@Model.Contraseña" type="password" placeholder="Contraseña" class="form-control"/>
+        </div>
+        
+        <div class="form-group">
+            <label>Nacionalidad</label>
+            <select asp-for="NacionalidadId" asp-items="@(new SelectList(Model.nacionalidades, "idNacionalidad", "Pais"))">
+                <option value="">-- Selecciona una Nacionalidad --</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+</div>
