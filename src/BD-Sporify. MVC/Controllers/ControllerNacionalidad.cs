@@ -10,11 +10,11 @@ namespace SpotifyMVC.Controllers
 {
     public class NacionalidadController : Controller
     {
-        private readonly ILogger<TipoSuscripcionController> _logger;
+        private readonly ILogger<NacionalidadController> _logger;
         private readonly IRepoNacionalidadAsync repoNacionalidad;
 
         public NacionalidadController(
-            ILogger<TipoSuscripcionController> logger,
+            ILogger<NacionalidadController> logger,
             IRepoNacionalidadAsync repoNacionalidad)
         {
             _logger = logger;
