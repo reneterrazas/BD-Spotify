@@ -56,4 +56,9 @@ public class RepoUsuarioAsync : RepoGenerico, IRepoUsuarioAsinc
     {
         throw new NotImplementedException();
     }
+    public async Task<Usuario?> Login(string email, string contrasenia)
+{
+    var sql = "SELECT * FROM Usuario WHERE Email = @Email AND Contrasenia = @Contrasenia;";
+    return await _conexion.QueryFirstOrDefaultAsync<Usuario>(sql, new { Email = email, Contrasenia = contrasenia });
+}
 } 

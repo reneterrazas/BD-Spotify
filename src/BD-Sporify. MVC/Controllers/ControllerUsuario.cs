@@ -3,6 +3,9 @@ using BD_Sporify._MVC.Models;
 using Spotify.Core;
 using Spotify.Core.Persistencia;
 using Spotify.ReposDapper;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 
 
@@ -83,5 +86,37 @@ namespace SpotifyMVC.Controllers
 
         return View(usuario);
     }
+    [HttpGet]
+    public IActionResult Login()
+    {
+    return View();
+    }
+    [HttpPost]
+    public async Task<IActionResult> Login(string email, string contrasenia)
+    {
+    var usuario = await repoUsuario.Login(email, contrasenia);
+
+    if (usuario == null)
+    {
+        ViewBag.Error = "Email o contraseña incorrectos.";
+        return View();
+    }
+
+    // Crear claims
+    var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.Name, usuario.NombreUsuario),
+        new Claim("Email", usuario.Email)
+    };
+
+    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+    var principal = new ClaimsPrincipal(identity);
+
+    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+    return RedirectToAction("Index", "Home");
+    }
+
+
     }
 }
