@@ -58,7 +58,7 @@ public class RepoUsuarioAsync : RepoGenerico, IRepoUsuarioAsinc
     }
     public async Task<Usuario?> Login(string email, string contrasenia)
 {
-    var sql = "SELECT * FROM Usuario WHERE Email = @Email AND Contrasenia = @Contrasenia;";
+    var sql = "SELECT * FROM Usuario WHERE Email = @Email AND Contrasenia = SHA2(@Contrasenia, 256);";
     return await _conexion.QueryFirstOrDefaultAsync<Usuario>(sql, new { Email = email, Contrasenia = contrasenia });
 }
 } 

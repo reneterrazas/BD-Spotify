@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("MySQL");
-Console.WriteLine(connectionString);
 
 // Registrar IDbConnection
 builder.Services.AddScoped<IDbConnection>(sp => new MySqlConnection(connectionString));

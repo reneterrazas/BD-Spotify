@@ -8,24 +8,36 @@ namespace BD_Sporify._MVC.Controllers
 {
     public class AuthController : Controller
     {
-        // GET: /Auth/Index
-        public IActionResult Index()
+        private readonly IRepoUsuarioAsinc _repoUsuario;
+
+        // Inyectamos el repositorio en el constructor
+        public AuthController(IRepoUsuarioAsinc repoUsuario)
+        {
+            _repoUsuario = repoUsuario;
+        }
+
+        // GET: /Auth/Login
+        public IActionResult Login()
         {
             return View();
         }
 
-        // POST: /Auth/Index
+        // POST: /Auth/Login
         [HttpPost]
-        public IActionResult Index(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            // Validación fija
-            string userEmail = "admin@gmail.com";
-            string userPass = "123";
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
-            if (model.Email == userEmail && model.Contrasenia == userPass)
+            // Buscamos el usuario en la base de datos por email
+            var usuario = await _repoUsuario.Login(model.Email, model.Contrasenia);
+
+            if (usuario != null)
             {
                 // Guardamos sesión
-                HttpContext.Session.SetString("UsuarioLogueado", userEmail);
+                HttpContext.Session.SetString("UsuarioLogueado", usuario.Email);
 
                 return RedirectToAction("Index", "Home");
             }
@@ -35,10 +47,11 @@ namespace BD_Sporify._MVC.Controllers
             return View(model);
         }
 
+        // Cerrar sesión
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Index", "Auth");
+            return RedirectToAction("Login", "Auth");
         }
     }
 }
