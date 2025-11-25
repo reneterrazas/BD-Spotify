@@ -58,23 +58,30 @@
                         </li>
                     </ul>
 
-                    <!-- BOTÓN DE LOGIN / LOGOUT A LA DERECHA -->
+                    <!-- BOTONES DE LOGIN / REGISTER / LOGOUT -->
                     <ul class="navbar-nav">
                         @if (!string.IsNullOrEmpty(usuarioLogueado))
                         {
+                            <!-- Usuario logueado -->
                             <li class="nav-item me-2">
                                 <span class="navbar-text text-white fw-bold">
                                     Bienvenido, @usuarioLogueado
                                 </span>
                             </li>
                             <li class="nav-item">
-                                <a class="btn btn-light text-dark fw-bold px-3" asp-controller="Auth" asp-action="Logout">
+                                <a class="btn btn-danger fw-bold px-3" asp-controller="Auth" asp-action="Logout">
                                     Cerrar sesión
                                 </a>
                             </li>
                         }
                         else
                         {
+                            <!-- Usuario NO logueado -->
+                            <li class="nav-item me-2">
+                                <a class="btn btn-outline-light fw-bold px-3" asp-controller="Auth" asp-action="Register">
+                                    Registrarse
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a class="btn btn-light text-dark fw-bold px-3" asp-controller="Auth" asp-action="Login">
                                     Iniciar sesión

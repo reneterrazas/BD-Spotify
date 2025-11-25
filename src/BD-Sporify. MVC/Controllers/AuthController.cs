@@ -3,6 +3,7 @@ using BD_Sporify._MVC.Models;
 using Spotify.Core;
 using Spotify.Core.Persistencia;
 using Spotify.ReposDapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BD_Sporify._MVC.Controllers
 {
@@ -27,11 +28,9 @@ namespace BD_Sporify._MVC.Controllers
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return View(model);
-            }
 
-            // Buscamos el usuario en la base de datos por email
+            // Buscamos el usuario en la base de datos
             var usuario = await _repoUsuario.Login(model.Email, model.Contrasenia);
 
             if (usuario != null)
@@ -45,6 +44,56 @@ namespace BD_Sporify._MVC.Controllers
             // Si está mal
             ViewBag.Error = "Email o contraseña incorrectos.";
             return View(model);
+        }
+
+        // GET: /Auth/Register
+ public async Task<IActionResult> Register()
+{
+    var nacionalidades = await _repoUsuario.RepoNacionalir(); // List<Nacionalidad>
+
+    var model = new RegisterViewModel
+    {
+        Nacionalidades = new SelectList(nacionalidades, "IdNacionalidad", "Nombre")
+    };
+
+    return View(model);
+}
+
+        // POST: /Auth/Register
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            // Verificar que las contraseñas coincidan
+            if (model.Contrasenia != model.ConfirmarContrasenia)
+            {
+                ViewBag.Error = "Las contraseñas no coinciden.";
+                return View(model);
+            }
+
+            // Verificar si ya existe un usuario con ese email
+            var usuarioExistente = await _repoUsuario.GetUsuarioByEmailAsync(model.Email);
+            if (usuarioExistente != null)
+            {
+                ViewBag.Error = "Ya existe un usuario con este email.";
+                return View(model);
+            }
+
+            // Crear usuario
+            var nuevoUsuario = new Usuario
+            {
+                NombreUsuario = model.Nombre,
+                Email = model.Email,
+                Contrasenia = model.Contrasenia, // Opcional: aplicar hash aquí
+                nacionalidad = new(){ idNacionalidad = (uint)Convert.ToInt32(model.NacionalidadId), Pais = new()}
+            };
+
+            await _repoUsuario.AltaUsuarioAsync(nuevoUsuario);
+
+            // Redirigir al login
+            return RedirectToAction("Login");
         }
 
         // Cerrar sesión
