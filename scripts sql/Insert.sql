@@ -9,7 +9,7 @@ USE 5to_Spotify;
 -- Tabla Album
  CALL altaAlbum (@idAlbumLuz, 'Luz y Sombra', @idArtistaTripleT);
  CALL altaAlbum (@idAlbumCaminos, 'Caminos Cruzados', @idArtistaElChapo);
- CALL altaAlbum (@idAlbumSuenios, 'Sueños de Verano', @idArtistalaMaquinaria);
+ CALL altaAlbum (@idAlbumSuenios, 'Suenos de Verano', @idArtistalaMaquinaria);
  CALL altaAlbum (@idAlbumEcos, 'Ecos del Pasado', @idArtistaElRenacido);
 
 -- Tabla Nacionalidad
@@ -32,7 +32,7 @@ CALL altaGenero('Ranchera', @idGeneroRanchera);
 
 -- Tabla Cancion
 CALL altaCancion(@idCancionOver, 'Its Over, Isnt It', '00:02:17', @idAlbumSuenios, @idArtistaElRenacido, @idGeneroHipHop);
-CALL altaCancion(@idCancionRene, 'René', '00:07:41', @idAlbumCaminos, @idArtistaElChapo, @idGeneroJazz);
+CALL altaCancion(@idCancionRene, 'Rene', '00:07:41', @idAlbumCaminos, @idArtistaElChapo, @idGeneroJazz);
 CALL altaCancion(@idCancionEstrella, 'Como Estrella', '00:03:40', @idAlbumLuz, @idArtistalaMaquinaria, @idGeneroReggae);
 CALL altaCancion(@idCancionCelos, 'Estos Celos', '00:03:10', @idAlbumEcos, @idArtistaTripleT, @idGeneroRanchera);
 
