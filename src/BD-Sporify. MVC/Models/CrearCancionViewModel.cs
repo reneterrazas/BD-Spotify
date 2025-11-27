@@ -6,9 +6,9 @@ namespace BD_Sporify._MVC.Models
 {
     public class CrearCancionViewModel
     {
-        public List<Album> albums { get; set; } = new();
+        public List<Album>? albums { get; set; } = new();
 
-        public List<Genero> generos { get; set; } = new();
+        public List<Genero>? generos { get; set; } = new();
         public string Titulo { get; set; } = String.Empty;
         public uint AlbumId { get; set; }
         public byte GeneroId { get; set; } 
