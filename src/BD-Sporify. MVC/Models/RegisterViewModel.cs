@@ -3,8 +3,8 @@
 namespace BD_Sporify._MVC.Models
 
 {
-    
-public class RegisterViewModel
+
+    public class RegisterViewModel
     {
         public string Nombre { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
@@ -15,6 +15,6 @@ public class RegisterViewModel
         public int NacionalidadId { get; set; }
 
         // Usamos SelectList en vez de List<SelectListItem>
-        public SelectList Nacionalidades { get; set; } = new SelectList();
-    }
+        public SelectList? Nacionalidades { get; set; }
+            }
 }

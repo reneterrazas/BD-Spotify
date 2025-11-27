@@ -10,10 +10,12 @@ namespace BD_Sporify._MVC.Controllers
     public class AuthController : Controller
     {
         private readonly IRepoUsuarioAsinc _repoUsuario;
+        private readonly IRepoNacionalidadAsync _repoNacionalidad;
 
         // Inyectamos el repositorio en el constructor
-        public AuthController(IRepoUsuarioAsinc repoUsuario)
+        public AuthController(IRepoUsuarioAsinc repoUsuario, IRepoNacionalidadAsync repoNacionalidad)
         {
+            _repoNacionalidad = repoNacionalidad;
             _repoUsuario = repoUsuario;
         }
 
@@ -49,11 +51,11 @@ namespace BD_Sporify._MVC.Controllers
         // GET: /Auth/Register
  public async Task<IActionResult> Register()
 {
-    var nacionalidades = await _repoUsuario.RepoNacionalir(); // List<Nacionalidad>
+    var nacionalidades = await _repoNacionalidad.Obtener(); // List<Nacionalidad>
 
     var model = new RegisterViewModel
     {
-        Nacionalidades = new SelectList(nacionalidades, "IdNacionalidad", "Nombre")
+        Nacionalidades = new SelectList(nacionalidades, nameof(Nacionalidad.idNacionalidad), nameof(Nacionalidad.Pais))
     };
 
     return View(model);
@@ -63,8 +65,12 @@ namespace BD_Sporify._MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+            var nacionalidades = await _repoNacionalidad.Obtener(); // List<Nacionalidad>
+            model.Nacionalidades = new SelectList(nacionalidades, nameof(Nacionalidad.idNacionalidad), nameof(Nacionalidad.Pais));
+
             if (!ModelState.IsValid)
                 return View(model);
+            
 
             // Verificar que las contraseñas coincidan
             if (model.Contrasenia != model.ConfirmarContrasenia)
@@ -74,8 +80,8 @@ namespace BD_Sporify._MVC.Controllers
             }
 
             // Verificar si ya existe un usuario con ese email
-            var usuarioExistente = await _repoUsuario.GetUsuarioByEmailAsync(model.Email);
-            if (usuarioExistente != null)
+            var usuarioExistente = await _repoUsuario.Obtener();
+            if (usuarioExistente.Where(x => x.Email == model.Email).Any())
             {
                 ViewBag.Error = "Ya existe un usuario con este email.";
                 return View(model);
@@ -87,10 +93,10 @@ namespace BD_Sporify._MVC.Controllers
                 NombreUsuario = model.Nombre,
                 Email = model.Email,
                 Contrasenia = model.Contrasenia, // Opcional: aplicar hash aquí
-                nacionalidad = new(){ idNacionalidad = (uint)Convert.ToInt32(model.NacionalidadId), Pais = new()}
+                nacionalidad = new(){ idNacionalidad = (uint)Convert.ToInt32(model.NacionalidadId), Pais = ""}
             };
 
-            await _repoUsuario.AltaUsuarioAsync(nuevoUsuario);
+            await _repoUsuario.Alta(nuevoUsuario);
 
             // Redirigir al login
             return RedirectToAction("Login");
