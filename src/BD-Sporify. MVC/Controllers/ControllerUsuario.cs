@@ -62,6 +62,14 @@ namespace SpotifyMVC.Controllers
                     Contrasenia = model.Contraseña,
                     nacionalidad = nacionalidadSeleccionada
                 };
+                            var usuarioExistente = await repoUsuario.Obtener();
+            if (usuarioExistente.Where(x => x.Email == model.Email).Any())
+                {
+                ViewBag.Error = "Ya existe un usuario con este email.";
+            model.nacionalidades = await repoNacionalidad.Obtener();
+
+                    return View(model);
+            }
 
                 await repoUsuario.Alta(usuario);
                 return RedirectToAction("Index");
@@ -69,6 +77,7 @@ namespace SpotifyMVC.Controllers
 
             model.nacionalidades = await repoNacionalidad.Obtener();
             return View(model);
+
         }
 
 
