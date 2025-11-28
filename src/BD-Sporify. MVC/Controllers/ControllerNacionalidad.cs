@@ -35,6 +35,14 @@ namespace SpotifyMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateNacionalidad(Nacionalidad nacionalidad)
         {
+            var nacionalidades = await repoNacionalidad.Obtener();
+
+            if (nacionalidades.Where(x => x.Pais == nacionalidad.Pais).Any())
+            {
+                ViewBag.Error ="Ya existe un pais con este nombre";
+                return View();
+            }
+
             await repoNacionalidad.Alta(nacionalidad);
             return RedirectToAction("Index");
         }

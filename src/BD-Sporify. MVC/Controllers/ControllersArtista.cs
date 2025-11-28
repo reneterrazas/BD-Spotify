@@ -31,8 +31,14 @@ public class ArtistaController : Controller
     [HttpPost]
     public async Task<IActionResult> CreateArtista(Artista artista)
     {
-        
-    var altaArtista = await repoArtista.Alta(artista);
+        List<Artista> artistas = await repoArtista.Obtener();
+        if (artistas.Where(x => x.NombreArtistico == artista.NombreArtistico).Any())
+        {
+            ViewBag.Error = "Ya existe un artista con este Nombre Artistico.";
+            return View();
+        }
+
+        var altaArtista = await repoArtista.Alta(artista);
 
         return RedirectToAction("Index");
     }

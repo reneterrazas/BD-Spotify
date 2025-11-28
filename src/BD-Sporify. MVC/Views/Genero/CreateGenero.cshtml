@@ -8,6 +8,10 @@
 <div class="form-card">
     <h2>Alta de Genero</h2>
     <form asp-action="CreateGenero" method="post">
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
         <div class="form-group">
             <label asp-for="genero">Nombre del genero</label>
             <input asp-for="genero" placeholder="Nombre" class="form-control"/>

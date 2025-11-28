@@ -7,6 +7,10 @@
 <div class="form-card">
     <h2>Alta de Nacionalidad</h2>
     <form asp-action="CreateNacionalidad" method="post">
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
         <div class="form-group">
             <label asp-for="Pais">Nombre del pais</label>
             <input asp-for="Pais" placeholder="Nombre" class="form-control"/>

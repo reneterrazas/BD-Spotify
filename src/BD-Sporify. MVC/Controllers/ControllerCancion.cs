@@ -58,14 +58,26 @@ namespace SpotifyMVC.Controllers
                 var albumSeleccionado = await repoAlbum.DetalleDe(model.AlbumId);
                 var generoSeleccionado = await repoGenero.DetalleDe(model.GeneroId);
 
+
                 var cancion = new Cancion
                 {
                     Titulo = model.Titulo,
-                    duration = new TimeSpan(0, 4, 23),
+                    duration = model.duration,
                     album = albumSeleccionado,
                     artista = albumSeleccionado.artista,
                     genero = generoSeleccionado
                 };
+
+                var canciones = await repoCancion.ObtenerTodo();
+
+                if (canciones.Where(x => x.Titulo == cancion.Titulo).Where(x => x.album.idAlbum == cancion.album.idAlbum).Any())
+                {
+                    ViewBag.Error = $"En el album: {cancion.album.Titulo} ya existe la cancion con el titulo: {cancion.Titulo}";
+                    model.generos = await repoGenero.Obtener();
+                    model.albums = await repoAlbum.Obtener();
+
+                    return View(model);
+                }
 
                 await repoCancion.Alta(cancion);
                 return RedirectToAction("Index");

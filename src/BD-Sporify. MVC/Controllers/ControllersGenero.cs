@@ -36,6 +36,13 @@ namespace SpotifyMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateGenero(Genero a)
         {
+            var generos = await repoGenero.Obtener();
+
+            if (generos.Where(genero => genero.genero == a.genero).Any())
+            {
+                ViewBag.Error = "Ya existe un genero con este nombre.";
+                return View();
+            }
 
             await repoGenero.Alta(a);
             return RedirectToAction("Index");

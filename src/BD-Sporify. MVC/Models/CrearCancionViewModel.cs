@@ -10,6 +10,7 @@ namespace BD_Sporify._MVC.Models
 
         public List<Genero>? generos { get; set; } = new();
         public string Titulo { get; set; } = String.Empty;
+        public TimeSpan duration { get; set; }
         public uint AlbumId { get; set; }
         public byte GeneroId { get; set; } 
 
