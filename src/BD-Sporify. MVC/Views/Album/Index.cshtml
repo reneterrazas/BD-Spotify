@@ -2,6 +2,7 @@
 @model List<Album>
 
 @{
+    var usuarioLogueado = Context.Session.GetString("UsuarioLogueado");
     ViewData["Title"] = "Álbumes";
 }
 
@@ -23,8 +24,9 @@
             }
         </tbody>
     </table>
+     @if (!string.IsNullOrEmpty(usuarioLogueado)){
     <button class="btn btn-primary">
     <a asp-action="CreateAlbum" class="text-white text-decoration-none">Crear Álbum</a>
 </button>
-
+     }
 </div>
