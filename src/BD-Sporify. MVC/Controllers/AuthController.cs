@@ -39,6 +39,14 @@ namespace BD_Sporify._MVC.Controllers
             {
                 // Guardamos sesión
                 HttpContext.Session.SetString("UsuarioLogueado", usuario.Email);
+                if(usuario.Email.Contains("rene"))
+                {
+                    HttpContext.Session.SetString("Rol", "Admin");
+                }
+                else
+                {
+                    HttpContext.Session.SetString("Rol", "Usuario");
+                }
 
                 return RedirectToAction("Index", "Home");
             }

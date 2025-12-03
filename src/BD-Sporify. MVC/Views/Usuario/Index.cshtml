@@ -2,6 +2,7 @@
 @model List<Usuario>
 
 @{
+    var rol = Context.Session.GetString("Rol");
     var usuarioLogueado = Context.Session.GetString("UsuarioLogueado");
     ViewData["Title"] = "Álbumes";
 }
@@ -24,7 +25,7 @@
             }
         </tbody>
     </table>
-    @if (!string.IsNullOrEmpty(usuarioLogueado)){
+    @if (rol == "Admin"){
     <button class="btn btn-primary">
     <a asp-action="CreateUsuario" class="text-white text-decoration-none">Crear Usuario</a>
 </button>
