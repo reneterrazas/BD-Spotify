@@ -2,6 +2,7 @@
 @model List<Genero>
 
 @{
+    var usuarioLogueado = Context.Session.GetString("UsuarioLogueado");
     ViewData["Title"] = "Generos";
 }
 
@@ -23,8 +24,9 @@
             }
         </tbody>
     </table>
+       @if (!string.IsNullOrEmpty(usuarioLogueado)){
    <button type="button" class="btn btn-primary">
     <a asp-action="CreateGenero" class="text-white text-decoration-none">Crear Género</a>
 </button>
-
+}
 </div>

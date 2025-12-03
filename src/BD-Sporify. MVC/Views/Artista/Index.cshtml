@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Artista";
+    var usuarioLogueado = Context.Session.GetString("UsuarioLogueado");
 }
 <!-- Listado de Artistas -->
 <div class="list-card">
@@ -36,8 +37,13 @@
     {
         <p>No hay artistas cargados aún.</p>
     }
-   <button type="button" class="btn btn-primary text-white">
+
+    @if (!string.IsNullOrEmpty(usuarioLogueado))
+    {
+        <button type="button" class="btn btn-primary text-white">
+
     <a asp-action="CreateArtista" class="text-white text-decoration-none">Crear Artistas</a>
 </button>
+    }
 
 </div>
